@@ -16,6 +16,7 @@ try:
     import base58
     import ecdsa
     import requests
+    import random
 
 # If required imports are unavailable, we will attempt to install them!
 
@@ -28,8 +29,16 @@ except ImportError:
     import ecdsa
     import requests
 
+def work():
+    low  = 0x8000000000000000
+    high = 0xffffffffffffffff
+    return str ( hex ( random.randrange( low, high ) ) )[2:]
+    
+#Number of zeros to be added
 def generate_private_key():
-    return binascii.hexlify(os.urandom(32)).decode('utf-8')
+    val = work()
+    result = val.rjust(48 + len(val), '0')
+    return str(result)
 
 def private_key_to_WIF(private_key):
     var80 = "80" + str(private_key) 
