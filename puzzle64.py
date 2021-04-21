@@ -1,4 +1,4 @@
-# Xh0st Bitcoin Puzzle 64 Random
+# Bitcoin Puzzle 64 Random
 # Made by Andrei Melek
 # https://github.com/Xh0st/puzzle64
 
