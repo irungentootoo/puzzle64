@@ -1,7 +1,6 @@
-# Purpyl Media Bitcoin Brute Forcer
-# Made by David Gilbert
-# https://github.com/purpyl-media/btc-hack
-# https://www.purpyl.media
+# Xh0st Bitcoin Puzzle 64 Random
+# Made by Andrei Melek
+# https://github.com/Xh0st/puzzle64
 
 try:
     import sys
