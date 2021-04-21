@@ -80,7 +80,7 @@ def public_key_to_address(public_key):
     return ''.join(output[::-1])
 
 def get_balance(address):
-    time.sleep(0.2) #This is to avoid over-using the API and keep the program running indefinately.
+    time.sleep(0.1) #This is to avoid over-using the API and keep the program running indefinately.
     try:
         response = requests.get("https://rest.bitcoin.com/v2/address/details/" + str(address))
         return float(response.json()['balance']) 
@@ -107,7 +107,7 @@ def process(data, balance):
     address = data[1]
     if (balance == 0.00000000):
         print("{:<34}".format(str(address)) + " : " + str(balance))
-    if (balance > 0.00000000):
+    if (balance == 0.00000000):
         file = open("found.txt","a")
         file.write("address: " + str(address) + "\n" +
                    "private key: " + str(private_key) + "\n" +
@@ -136,3 +136,4 @@ if __name__ == '__main__':
     except:
         pool.close()
         exit()
+
