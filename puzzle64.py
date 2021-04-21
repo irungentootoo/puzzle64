@@ -107,7 +107,7 @@ def process(data, balance):
     address = data[1]
     if (balance == 0.00000000):
         print("{:<34}".format(str(address)) + " : " + str(balance))
-    if (balance == 0.00000000):
+    if (balance > 0.00000000):
         file = open("found.txt","a")
         file.write("address: " + str(address) + "\n" +
                    "private key: " + str(private_key) + "\n" +
@@ -136,4 +136,3 @@ if __name__ == '__main__':
     except:
         pool.close()
         exit()
-
