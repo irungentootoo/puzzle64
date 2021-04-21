@@ -37,8 +37,17 @@ def private_key_to_WIF(private_key):
     return str(base58.b58encode(binascii.unhexlify(str(var80) + str(var[0:8]))), 'utf-8')
 
 def private_key_to_public_key(private_key):
-    sign = ecdsa.SigningKey.from_string(binascii.unhexlify(private_key), curve = ecdsa.SECP256k1)
-    return ('04' + binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8'))
+        sign = ecdsa.SigningKey.from_string(binascii.unhexlify(private_key), curve = ecdsa.SECP256k1)
+        key_bytes = binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8')
+        key = ('0x' + binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8'))
+        # Get X from the key (first half)
+        half_len = len(key_bytes) // 2
+        key_half = key_bytes[:half_len]
+        # Add bitcoin byte: 0x02 if the last digit is even, 0x03 if the last digit is odd
+        last_byte = int(key[-1], 16)
+        bitcoin_byte = '02' if last_byte % 2 == 0 else '03'
+        public_key = bitcoin_byte + key_half
+        return public_key 
 
 def public_key_to_address(public_key):
     alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
