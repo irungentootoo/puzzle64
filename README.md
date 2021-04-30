@@ -2,6 +2,11 @@
 
 Private keys are generated randomly in keyspace 8000000000000000:ffffffffffffffff the private keys are converted into their respective public keys to address and checks their balance in real-time.
 
+I really apreciate a small donation i don't have crypto in my protfolio
+BTC: 1DZR3pdrJkBcF3D6hMmFYcrVJ4oHrqepG2
+LTC: 
+XMR:
+
 # Dependencies
 
 <a href="https://www.python.org/downloads/">Python 3.6</a> or higher
