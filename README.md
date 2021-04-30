@@ -4,10 +4,11 @@ Private keys are generated randomly in keyspace 8000000000000000:fffffffffffffff
 
 # Donation
 
-I really apreciate a small donation. I don't have crypto in my protfolio
+I really apreciate any small donation. 
 BTC: 1DZR3pdrJkBcF3D6hMmFYcrVJ4oHrqepG2
-LTC: 
-XMR:
+LTC: LdspvbLuKeRCiD3MxheFm4hFfAq8RxqhrJ
+XMR: 46ig2xy6NHLSs1dcXiGUnjFhHf9UYVEywAhvU9U6jEgLXRW3ADjoQLZAZnqdr22PGq3A5Q4UzAV6i54JQJTyCscYPn5Dmh8
+ETH: 0x481f70Fd18a7a4C5642680B7441FCF36a4A28eAD
 
 # Dependencies
 
