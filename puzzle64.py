@@ -40,43 +40,44 @@ def generate_private_key():
     return str(result)
 
 def private_key_to_WIF(private_key):
-    var80 = "80" + str(private_key) 
+    var80 = "80" + str(private_key)
     var = hashlib.sha256(binascii.unhexlify(hashlib.sha256(binascii.unhexlify(var80)).hexdigest())).hexdigest()
-    return str(base58.b58encode(binascii.unhexlify(str(var80) + str(var[0:8]))), 'utf-8')
+    return str(
+        base58.b58encode(binascii.unhexlify(str(var80) + str(var[:8]))),
+        'utf-8',
+    )
 
 def private_key_to_public_key(private_key):
-        sign = ecdsa.SigningKey.from_string(binascii.unhexlify(private_key), curve = ecdsa.SECP256k1)
-        key_bytes = binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8')
-        key = ('0x' + binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8'))
-        # Get X from the key (first half)
-        half_len = len(key_bytes) // 2
-        key_half = key_bytes[:half_len]
-        # Add bitcoin byte: 0x02 if the last digit is even, 0x03 if the last digit is odd
-        last_byte = int(key[-1], 16)
-        bitcoin_byte = '02' if last_byte % 2 == 0 else '03'
-        public_key = bitcoin_byte + key_half
-        return public_key 
+    sign = ecdsa.SigningKey.from_string(binascii.unhexlify(private_key), curve = ecdsa.SECP256k1)
+    key_bytes = binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8')
+    key = ('0x' + binascii.hexlify(sign.verifying_key.to_string()).decode('utf-8'))
+    # Get X from the key (first half)
+    half_len = len(key_bytes) // 2
+    key_half = key_bytes[:half_len]
+    # Add bitcoin byte: 0x02 if the last digit is even, 0x03 if the last digit is odd
+    last_byte = int(key[-1], 16)
+    bitcoin_byte = '02' if last_byte % 2 == 0 else '03'
+    return bitcoin_byte + key_half 
 
 def public_key_to_address(public_key):
     alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    count = 0; val = 0
+    count = 0
     var = hashlib.new('ripemd160')
     var.update(hashlib.sha256(binascii.unhexlify(public_key.encode())).digest())
     doublehash = hashlib.sha256(hashlib.sha256(binascii.unhexlify(('00' + var.hexdigest()).encode())).digest()).hexdigest()
-    address = '00' + var.hexdigest() + doublehash[0:8]
+    address = '00' + var.hexdigest() + doublehash[:8]
     for char in address:
         if (char != '0'):
             break
         count += 1
-    count = count // 2
+    count //= 2
     n = int(address, 16)
     output = []
     while (n > 0):
         n, remainder = divmod (n, 58)
         output.append(alphabet[remainder])
-    while (val < count):
+    for _ in range(count):
         output.append(alphabet[0])
-        val += 1
     return ''.join(output[::-1])
 
 def get_balance(address):
@@ -108,13 +109,12 @@ def process(data, balance):
     if (balance == 0.00000000):
         print("{:<34}".format(str(address)) + " : " + str(balance))
     if (balance > 0.00000000):
-        file = open("found.txt","a")
-        file.write("address: " + str(address) + "\n" +
-                   "private key: " + str(private_key) + "\n" +
-                   "WIF private key: " + str(private_key_to_WIF(private_key)) + "\n" +
-                   "public key: " + str(private_key_to_public_key(private_key)).upper() + "\n" +
-                   "balance: " + str(balance) + "\n\n")
-        file.close()
+        with open("found.txt","a") as file:
+            file.write("address: " + str(address) + "\n" +
+                       "private key: " + str(private_key) + "\n" +
+                       "WIF private key: " + str(private_key_to_WIF(private_key)) + "\n" +
+                       "public key: " + str(private_key_to_public_key(private_key)).upper() + "\n" +
+                       "balance: " + str(balance) + "\n\n")
 
 def thread(iterator):
     processes = []
@@ -132,7 +132,7 @@ def thread(iterator):
 if __name__ == '__main__':
     try:
         pool = ThreadPool(processes = multiprocessing.cpu_count()*2)
-        pool.map(thread, range(0, 1)) # Limit to single CPU thread as we can only query 300 addresses per minute
+        pool.map(thread, range(1))
     except:
         pool.close()
         exit()
